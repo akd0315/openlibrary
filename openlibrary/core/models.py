@@ -20,7 +20,7 @@ from openlibrary.core.vendors import create_edition_from_amazon_metadata
 
 # relative imports
 from lists.model import ListMixin, Seed
-from . import db, cache, iprange, inlibrary, loanstats, waitinglist, lending
+from . import cache, waitinglist
 
 from six.moves import urllib
 
@@ -284,9 +284,8 @@ class Edition(Thing):
 
     def in_borrowable_collection(self):
         collections = self.get_ia_collections()
-        return ('lendinglibrary' in collections or
-            ('inlibrary' in collections and inlibrary.get_library() is not None)
-            ) and not self.is_in_private_collection()
+        return ('lendinglibrary' in collections
+                and not self.is_in_private_collection())
 
     def can_borrow(self):
         """This method should be deprecated in favor of in_borrowable_collection"""
